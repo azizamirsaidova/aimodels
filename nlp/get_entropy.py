@@ -2,6 +2,7 @@ import nltk
 import numpy as np
 import re
 import string
+import pandas as pd 
 from collections import Counter
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
@@ -26,13 +27,18 @@ def calculate_entropy(tokens):
     entropy = -sum(p * np.log2(p) for p in probabilities)
     return entropy
 
+def _range(series):
+    return series.max() - series.min()
+
 def main():
     text = "As a virtual assistant you are dedicated to sharing knowledge and opinions on social media."
     tokens = preprocess_text(text)
     entropy_res = calculate_entropy(tokens)
 
+    df = pd.read_csv('/Users/azizamirsaidova/Downloads/output.csv')
     print(f"words: {tokens}")
     print(f"entropy: {entropy_res}")
+    print(df[['entropy']].agg(['min', 'mean', 'std', _range]))
 
 if __name__ == '__main__':
     main()
